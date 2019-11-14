@@ -1,0 +1,61 @@
+const API_URL = 'https://apis.is/company?name=';
+
+/**
+ * Leit að fyrirtækjum á Íslandi gegnum apis.is
+ */
+const program = (() => {
+	let input;
+	function init(companies) {
+		console.log(companies);
+		input = companies.querySelector('input');
+		const form = document.querySelector('form');
+
+		form.addEventListener('submit', formHandler);
+	}
+
+	function fetchResults(company) {
+		//TODO loading
+		fetch(`${API_URL}${company}`)
+		.then((result) => {
+			if (!result.ok) {
+				throw new Error('Non 200 status');
+			}
+			return result.json();
+		})
+		.then(data =>
+		showData();
+		console.log(data));
+		.catch(error =>
+		showMessage();
+		console.error(error));
+	}
+
+	function formHandler(e) {
+        e.preventDefault();
+        const value = input.value; 
+		console.log(value);
+		if (value.trim()==='') {
+			//showMessage()
+			console.log('error');
+		} else {
+			fetchResults(value);
+		}
+	}
+
+
+
+//showResults, 	
+
+	function loadingScreen() {
+		return;
+	}
+
+	return {
+		init,
+	};
+})();
+
+document.addEventListener('DOMContentLoaded', () => {
+	const companies = document.querySelector('main');
+	program.init(companies);
+});        
